@@ -1997,8 +1997,10 @@ strhandle(void)
 			if (!strcmp(p, "?")) {
 				osc_color_response(par, osc_table[j].idx, 0);
 			} else if (xsetcolorname(osc_table[j].idx, p)) {
-				fprintf(stderr, "erresc: invalid %s color: %s\n",
-				        osc_table[j].str, p);
+				if (par == 104 && narg <= 1)
+					return; /* color reset without parameter */
+				fprintf(stderr, "erresc: invalid color j=%d, p=%s\n",
+				        j, p ? p : "(null)");
 			} else {
 				tfulldirt();
 			}
